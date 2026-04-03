@@ -29,7 +29,7 @@ const resources = {
             "choiceText": "Every moment of your life is a choice, and the sum of these decisions has brought you to this very point. Here, in this space, you will be called to make conscious choices. Remember: each manifest decision alters our direction, opening some paths and closing others forever. The road we travel depends on the will you exercise.",
             "navSteps": "Steps",
             "navHome": "Home",
-            "stepsTitle": "Главы путешествия",
+            "stepsTitle": "Journey Chapters",
             "steps": {
                 "intro": { "title": "Intro", "lyrics": getLyrics("intro"), "philosophy": getPhilosophy("intro") },
                 "1-traces": { "title": "Traces", "lyrics": getLyrics("1-traces"), "philosophy": getPhilosophy("1-traces") },
