@@ -18,7 +18,6 @@ And I am different myself, I'm on a different strand,
 The rain is coming after me, about to wash...
 The traces on the sand...
 ```
-
 ```ru
 За кого ты?
 За кого ты?
@@ -40,5 +39,4 @@ The traces on the sand...
 И я сам уже не тот, стою в другой реке
 За мной идет дождь, он скоро смоет...
 Следы на песке
-
 ```

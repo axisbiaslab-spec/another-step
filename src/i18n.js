@@ -2,23 +2,22 @@ import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 
-// Shared Lyrics
-import introLyrics from './content/intro/lyrics.md?raw';
-import song1Lyrics from './content/1-traces/lyrics.md?raw';
-import outroLyrics from './content/outro/lyrics.md?raw';
+const lyricsFiles = import.meta.glob('./content/*/lyrics.md', { query: '?raw', import: 'default', eager: true });
+const philosophyFiles = import.meta.glob('./content/*/philosophy.md', { query: '?raw', import: 'default', eager: true });
 
-// Shared Philosophy
-import introPhilosophy from './content/intro/philosophy.md?raw';
-import song1Philosophy from './content/1-traces/philosophy.md?raw';
-import outroPhilosophy from './content/outro/philosophy.md?raw';
+function getLyrics(slug) {
+  return lyricsFiles[`./content/${slug}/lyrics.md`] || '';
+}
+
+function getPhilosophy(slug) {
+  return philosophyFiles[`./content/${slug}/philosophy.md`] || '';
+}
 
 const resources = {
     en: {
         translation: {
             "hero.title": "Another Step",
             "hero.subtitle": "An immersive musical performance",
-            "aboutMe.title": "About Me",
-            "aboutMe.text": "Engineer, musician, and philosopher exploring the intersection of technology, sound, and consciousness.",
             "aboutShow.title": "About the Show",
             "aboutShow.text": "A conceptual audiovisual journey challenging our perception of reality.",
             "footer.socials": "Connect with us:",
@@ -32,21 +31,22 @@ const resources = {
             "navHome": "Home",
             "stepsTitle": "Chapters of the Journey",
             "steps": {
-                "intro": {
-                    "title": "1. The Awakening (Intro)",
-                    "lyrics": `[Instrumental / Ambient]`,
-                    "philosophy": introPhilosophy
-                },
-                "song1": {
-                    "title": "2. First Choice (Song 1)",
-                    "lyrics": song1Lyrics,
-                    "philosophy": song1Philosophy
-                },
-                "outro": {
-                    "title": "3. The Return (Outro)",
-                    "lyrics": outroLyrics,
-                    "philosophy": outroPhilosophy
-                }
+                "intro": { "title": "Вступление / Intro", "lyrics": getLyrics("intro"), "philosophy": getPhilosophy("intro") },
+                "1-traces": { "title": "1 Traces", "lyrics": getLyrics("1-traces"), "philosophy": getPhilosophy("1-traces") },
+                "2-awaiting": { "title": "2 Awaiting", "lyrics": getLyrics("2-awaiting"), "philosophy": getPhilosophy("2-awaiting") },
+                "2a-anger": { "title": "2a Anger", "lyrics": getLyrics("2a-anger"), "philosophy": getPhilosophy("2a-anger") },
+                "3-rusty-leaves": { "title": "3 Rusty Leaves", "lyrics": getLyrics("3-rusty-leaves"), "philosophy": getPhilosophy("3-rusty-leaves") },
+                "4a-arevoir": { "title": "4a Arevoir", "lyrics": getLyrics("4a-arevoir"), "philosophy": getPhilosophy("4a-arevoir") },
+                "4b-sweet-poison": { "title": "4b Sweet Poison", "lyrics": getLyrics("4b-sweet-poison"), "philosophy": getPhilosophy("4b-sweet-poison") },
+                "5-melodies": { "title": "5 Melodies", "lyrics": getLyrics("5-melodies"), "philosophy": getPhilosophy("5-melodies") },
+                "6a-black-shades": { "title": "6a Black Shades", "lyrics": getLyrics("6a-black-shades"), "philosophy": getPhilosophy("6a-black-shades") },
+                "6b-the-light": { "title": "6b The Light", "lyrics": getLyrics("6b-the-light"), "philosophy": getPhilosophy("6b-the-light") },
+                "7-4u": { "title": "7 4u", "lyrics": getLyrics("7-4u"), "philosophy": getPhilosophy("7-4u") },
+                "8-kango": { "title": "8 Kango", "lyrics": getLyrics("8-kango"), "philosophy": getPhilosophy("8-kango") },
+                "9-winds": { "title": "9 Winds", "lyrics": getLyrics("9-winds"), "philosophy": getPhilosophy("9-winds") },
+                "10-take-me": { "title": "10 Take me", "lyrics": getLyrics("10-take-me"), "philosophy": getPhilosophy("10-take-me") },
+                "11-another-breath": { "title": "11 Another breath", "lyrics": getLyrics("11-another-breath"), "philosophy": getPhilosophy("11-another-breath") },
+                "outro": { "title": "Завершение / Outro", "lyrics": getLyrics("outro"), "philosophy": getPhilosophy("outro") }
             }
         }
     },
@@ -54,8 +54,6 @@ const resources = {
         translation: {
             "hero.title": "Another Step",
             "hero.subtitle": "Иммерсивный аудиовизуальный перформанс",
-            "aboutMe.title": "Обо мне",
-            "aboutMe.text": "Инженер, музыкант и философ, исследующий пересечение технологий, звука и сознания.",
             "aboutShow.title": "О шоу",
             "aboutShow.text": "Концептуальное аудиовизуальное путешествие, бросающее вызов нашему восприятию реальности.",
             "footer.socials": "Свяжитесь с нами:",
@@ -69,21 +67,22 @@ const resources = {
             "navHome": "Главная",
             "stepsTitle": "Главы путешествия",
             "steps": {
-                "intro": {
-                    "title": "1. Пробуждение (Вступление)",
-                    "lyrics": `[Инструментал / Эмбиент]`,
-                    "philosophy": introPhilosophy
-                },
-                "song1": {
-                    "title": "2. Первый шаг (Песня 1)",
-                    "lyrics": song1Lyrics,
-                    "philosophy": song1Philosophy
-                },
-                "outro": {
-                    "title": "3. Возвращение (Завершение)",
-                    "lyrics": outroLyrics,
-                    "philosophy": outroPhilosophy
-                }
+                "intro": { "title": "Вступление / Intro", "lyrics": getLyrics("intro"), "philosophy": getPhilosophy("intro") },
+                "1-traces": { "title": "1 Traces", "lyrics": getLyrics("1-traces"), "philosophy": getPhilosophy("1-traces") },
+                "2-awaiting": { "title": "2 Awaiting", "lyrics": getLyrics("2-awaiting"), "philosophy": getPhilosophy("2-awaiting") },
+                "2a-anger": { "title": "2a Anger", "lyrics": getLyrics("2a-anger"), "philosophy": getPhilosophy("2a-anger") },
+                "3-rusty-leaves": { "title": "3 Rusty Leaves", "lyrics": getLyrics("3-rusty-leaves"), "philosophy": getPhilosophy("3-rusty-leaves") },
+                "4a-arevoir": { "title": "4a Arevoir", "lyrics": getLyrics("4a-arevoir"), "philosophy": getPhilosophy("4a-arevoir") },
+                "4b-sweet-poison": { "title": "4b Sweet Poison", "lyrics": getLyrics("4b-sweet-poison"), "philosophy": getPhilosophy("4b-sweet-poison") },
+                "5-melodies": { "title": "5 Melodies", "lyrics": getLyrics("5-melodies"), "philosophy": getPhilosophy("5-melodies") },
+                "6a-black-shades": { "title": "6a Black Shades", "lyrics": getLyrics("6a-black-shades"), "philosophy": getPhilosophy("6a-black-shades") },
+                "6b-the-light": { "title": "6b The Light", "lyrics": getLyrics("6b-the-light"), "philosophy": getPhilosophy("6b-the-light") },
+                "7-4u": { "title": "7 4u", "lyrics": getLyrics("7-4u"), "philosophy": getPhilosophy("7-4u") },
+                "8-kango": { "title": "8 Kango", "lyrics": getLyrics("8-kango"), "philosophy": getPhilosophy("8-kango") },
+                "9-winds": { "title": "9 Winds", "lyrics": getLyrics("9-winds"), "philosophy": getPhilosophy("9-winds") },
+                "10-take-me": { "title": "10 Take me", "lyrics": getLyrics("10-take-me"), "philosophy": getPhilosophy("10-take-me") },
+                "11-another-breath": { "title": "11 Another breath", "lyrics": getLyrics("11-another-breath"), "philosophy": getPhilosophy("11-another-breath") },
+                "outro": { "title": "Завершение / Outro", "lyrics": getLyrics("outro"), "philosophy": getPhilosophy("outro") }
             }
         }
     },
@@ -91,8 +90,6 @@ const resources = {
         translation: {
             "hero.title": "Another Step",
             "hero.subtitle": "Imerzivni muzički performans",
-            "aboutMe.title": "O meni",
-            "aboutMe.text": "Inženjer, muzičar i filozof koji istražuje raskrsnicu tehnologije, zvuka i svesti.",
             "aboutShow.title": "O predstavi",
             "aboutShow.text": "Konceptualno audiovizuelno putovanje koje izaziva našu percepciju realnosti.",
             "footer.socials": "Povežite se sa nama:",
@@ -106,36 +103,37 @@ const resources = {
             "navHome": "Početna",
             "stepsTitle": "Poglavlja putovanja",
             "steps": {
-                "intro": {
-                    "title": "1. Buđenje (Uvod)",
-                    "lyrics": introLyrics,
-                    "philosophy": introPhilosophy
-                },
-                "song1": {
-                    "title": "2. Prvi korak (Pesma 1)",
-                    "lyrics": song1Lyrics,
-                    "philosophy": song1Philosophy
-                },
-                "outro": {
-                    "title": "3. Povratak (Završetak)",
-                    "lyrics": outroLyrics,
-                    "philosophy": outroPhilosophy
-                }
+                "intro": { "title": "Вступление / Intro", "lyrics": getLyrics("intro"), "philosophy": getPhilosophy("intro") },
+                "1-traces": { "title": "1 Traces", "lyrics": getLyrics("1-traces"), "philosophy": getPhilosophy("1-traces") },
+                "2-awaiting": { "title": "2 Awaiting", "lyrics": getLyrics("2-awaiting"), "philosophy": getPhilosophy("2-awaiting") },
+                "2a-anger": { "title": "2a Anger", "lyrics": getLyrics("2a-anger"), "philosophy": getPhilosophy("2a-anger") },
+                "3-rusty-leaves": { "title": "3 Rusty Leaves", "lyrics": getLyrics("3-rusty-leaves"), "philosophy": getPhilosophy("3-rusty-leaves") },
+                "4a-arevoir": { "title": "4a Arevoir", "lyrics": getLyrics("4a-arevoir"), "philosophy": getPhilosophy("4a-arevoir") },
+                "4b-sweet-poison": { "title": "4b Sweet Poison", "lyrics": getLyrics("4b-sweet-poison"), "philosophy": getPhilosophy("4b-sweet-poison") },
+                "5-melodies": { "title": "5 Melodies", "lyrics": getLyrics("5-melodies"), "philosophy": getPhilosophy("5-melodies") },
+                "6a-black-shades": { "title": "6a Black Shades", "lyrics": getLyrics("6a-black-shades"), "philosophy": getPhilosophy("6a-black-shades") },
+                "6b-the-light": { "title": "6b The Light", "lyrics": getLyrics("6b-the-light"), "philosophy": getPhilosophy("6b-the-light") },
+                "7-4u": { "title": "7 4u", "lyrics": getLyrics("7-4u"), "philosophy": getPhilosophy("7-4u") },
+                "8-kango": { "title": "8 Kango", "lyrics": getLyrics("8-kango"), "philosophy": getPhilosophy("8-kango") },
+                "9-winds": { "title": "9 Winds", "lyrics": getLyrics("9-winds"), "philosophy": getPhilosophy("9-winds") },
+                "10-take-me": { "title": "10 Take me", "lyrics": getLyrics("10-take-me"), "philosophy": getPhilosophy("10-take-me") },
+                "11-another-breath": { "title": "11 Another breath", "lyrics": getLyrics("11-another-breath"), "philosophy": getPhilosophy("11-another-breath") },
+                "outro": { "title": "Завершение / Outro", "lyrics": getLyrics("outro"), "philosophy": getPhilosophy("outro") }
             }
         }
     }
 };
 
 i18n
-    .use(LanguageDetector)
-    .use(initReactI18next)
-    .init({
-        resources,
-        fallbackLng: 'en',
-        supportedLngs: ['en', 'ru', 'sr'],
-        interpolation: {
-            escapeValue: false
-        }
-    });
+  .use(LanguageDetector)
+  .use(initReactI18next)
+  .init({
+    resources,
+    fallbackLng: 'en',
+    supportedLngs: ['en', 'ru', 'sr'],
+    interpolation: {
+      escapeValue: false
+    }
+  });
 
 export default i18n;
