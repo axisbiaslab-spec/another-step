@@ -31,22 +31,22 @@ const resources = {
             "navHome": "Home",
             "stepsTitle": "Главы путешествия",
             "steps": {
-                "intro": { "title": "Intro / Вступление", "lyrics": getLyrics("intro"), "philosophy": getPhilosophy("intro") },
-                "1-traces": { "title": "Traces / Следы на песке", "lyrics": getLyrics("1-traces"), "philosophy": getPhilosophy("1-traces") },
-                "2-awaiting": { "title": "Awaiting / В Ожидании Весны", "lyrics": getLyrics("2-awaiting"), "philosophy": getPhilosophy("2-awaiting") },
-                "2a-anger": { "title": "Anger / Гнев", "lyrics": getLyrics("2a-anger"), "philosophy": getPhilosophy("2a-anger") },
-                "3-rusty-leaves": { "title": "Rusty Leaves / Ржавые Листья", "lyrics": getLyrics("3-rusty-leaves"), "philosophy": getPhilosophy("3-rusty-leaves") },
+                "intro": { "title": "Intro", "lyrics": getLyrics("intro"), "philosophy": getPhilosophy("intro") },
+                "1-traces": { "title": "Traces", "lyrics": getLyrics("1-traces"), "philosophy": getPhilosophy("1-traces") },
+                "2-awaiting": { "title": "Awaiting", "lyrics": getLyrics("2-awaiting"), "philosophy": getPhilosophy("2-awaiting") },
+                "2a-anger": { "title": "Anger", "lyrics": getLyrics("2a-anger"), "philosophy": getPhilosophy("2a-anger") },
+                "3-rusty-leaves": { "title": "Rusty Leaves", "lyrics": getLyrics("3-rusty-leaves"), "philosophy": getPhilosophy("3-rusty-leaves") },
                 "4a-arevoir": { "title": "Aurevoir", "lyrics": getLyrics("4a-arevoir"), "philosophy": getPhilosophy("4a-arevoir") },
-                "4b-sweet-poison": { "title": "Sweet Poison / Сладкий Яд", "lyrics": getLyrics("4b-sweet-poison"), "philosophy": getPhilosophy("4b-sweet-poison") },
-                "5-melodies": { "title": "Melodies / Журчат Ручьи", "lyrics": getLyrics("5-melodies"), "philosophy": getPhilosophy("5-melodies") },
+                "4b-sweet-poison": { "title": "Sweet Poison", "lyrics": getLyrics("4b-sweet-poison"), "philosophy": getPhilosophy("4b-sweet-poison") },
+                "5-melodies": { "title": "Melodies", "lyrics": getLyrics("5-melodies"), "philosophy": getPhilosophy("5-melodies") },
                 "6a-black-shades": { "title": "Black Shades", "lyrics": getLyrics("6a-black-shades"), "philosophy": getPhilosophy("6a-black-shades") },
-                "6b-the-light": { "title": "The Light / Свет", "lyrics": getLyrics("6b-the-light"), "philosophy": getPhilosophy("6b-the-light") },
+                "6b-the-light": { "title": "The Light", "lyrics": getLyrics("6b-the-light"), "philosophy": getPhilosophy("6b-the-light") },
                 "7-4u": { "title": "4U", "lyrics": getLyrics("7-4u"), "philosophy": getPhilosophy("7-4u") },
                 "8-kango": { "title": "Kango", "lyrics": getLyrics("8-kango"), "philosophy": getPhilosophy("8-kango") },
-                "9-winds": { "title": "Winds / Ветра", "lyrics": getLyrics("9-winds"), "philosophy": getPhilosophy("9-winds") },
+                "9-winds": { "title": "Winds", "lyrics": getLyrics("9-winds"), "philosophy": getPhilosophy("9-winds") },
                 "10-take-me": { "title": "Take Me", "lyrics": getLyrics("10-take-me"), "philosophy": getPhilosophy("10-take-me") },
-                "11-another-breath": { "title": "Another Breath / Следующий Вдох", "lyrics": getLyrics("11-another-breath"), "philosophy": getPhilosophy("11-another-breath") },
-                "outro": { "title": "Outro / Завершение", "lyrics": getLyrics("outro"), "philosophy": getPhilosophy("outro") }
+                "11-another-breath": { "title": "Another Breath", "lyrics": getLyrics("11-another-breath"), "philosophy": getPhilosophy("11-another-breath") },
+                "outro": { "title": "Outro", "lyrics": getLyrics("outro"), "philosophy": getPhilosophy("outro") }
             }
         }
     },
