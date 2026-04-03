@@ -75,7 +75,11 @@ function StepDetail() {
 
         <div className="step-philosophy">
           <h2>Philosophy</h2>
-          <p style={{ whiteSpace: 'pre-wrap' }}>{activePhilosophy}</p>
+          <div className="philosophy-content">
+            {activePhilosophy.split(/\n\s*\n/).map((para, idx) => (
+              <p key={idx}>{para.trim()}</p>
+            ))}
+          </div>
         </div>
         <div className="step-lyrics">
           <h2>Lyrics</h2>

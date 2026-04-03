@@ -27,6 +27,10 @@ function App() {
     document.documentElement.setAttribute('data-scroll', scrolled ? '1' : '0');
   }, [scrolled]);
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
+
   const changeLanguage = (lng) => {
     i18n.changeLanguage(lng);
   };

@@ -163,9 +163,48 @@ body {
     margin-bottom: 3rem;
 }
 
-.step-header h1 {
+h1 {
     font-size: clamp(2rem, 5vw, 3rem);
-    font-weight: 300;
+    font-family: "Courier New", Courier, monospace;
+    letter-spacing: 0.05em;
+    font-weight: 400;
+    text-transform: uppercase;
+
+    /* 1. Создаем золотой градиент с "бликом" посередине */
+    background: linear-gradient(
+        to right, 
+        #bf953f 20%, 
+        #fcf6ba 40%, 
+        #b38728 50%, 
+        #fcf6ba 60%, 
+        #bf953f 80%
+    );
+    background-size: 200% auto; /* Растягиваем фон для анимации */
+    
+    /* 2. Накладываем градиент на текст */
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent; /* Делаем основной цвет прозрачным */
+
+    /* 3. Оставляем ваше сияние (опционально) */
+    /* filter: drop-shadow(0 0 1px var(--logo-gold-glow)); */
+
+    /* 4. Запускаем анимацию */
+    animation: gold-shine 4s linear infinite;
+    text-shadow: 
+        0 0 4px var(--logo-gold-glow),
+        0 0 10px var(--logo-gold-glow),
+        0 0 15px var(--logo-gold-glow);
+}
+
+/* Описываем движение градиента */
+@keyframes gold-shine {
+    0% {
+        background-position: 200% center;
+    }
+    100% {
+        background-position: 0% center;
+    }
 }
 
 .step-content {
@@ -222,6 +261,17 @@ body {
     font-size: 1.1rem;
     line-height: 1.8;
     animation: fadeIn 0.5s ease-out;
+}
+
+.philosophy-content p {
+    font-size: 1.05rem;
+    color: var(--text-secondary);
+    line-height: 1.8;
+    margin-bottom: 1.2rem;
+}
+
+.philosophy-content p:last-child {
+    margin-bottom: 0;
 }
 
 /* Layout */
