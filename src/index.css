@@ -13,6 +13,20 @@
     --logo-green-glow: rgba(157, 227, 84, 0.5);
 }
 
+@font-face {
+    font-family: 'Courier New Cyr';
+    src: url('/fonts/Courier New Cyr.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Courier New';
+    src: url('/fonts/Courier New.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -165,7 +179,7 @@ body {
 
 h1 {
     font-size: clamp(2rem, 5vw, 3rem);
-    font-family: "Courier New", Courier, monospace;
+    font-family: "Courier New Cyr", "Courier New", Courier, monospace;
     letter-spacing: 0.05em;
     font-weight: 400;
     text-transform: uppercase;
@@ -292,7 +306,7 @@ main {
 }
 
 .hero h1 {
-    font-family: "Courier New", Courier, monospace;
+    font-family: "Courier New Cyr","Courier New", Courier, monospace;
     font-size: clamp(2.5rem, 8vw, 4rem);
     letter-spacing: 0.05em;
     margin-bottom: 0.5rem;
