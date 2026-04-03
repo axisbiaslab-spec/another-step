@@ -1,16 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-
-const Section = ({ id, title, text }) => (
-  <section id={id}>
-    <h2>{title}</h2>
-    <p>{text}</p>
-  </section>
-);
+import { Routes, Route, Link, useLocation } from 'react-router-dom';
+import Home from './pages/Home';
+import StepsList from './pages/StepsList';
+import StepDetail from './pages/StepDetail';
 
 function App() {
   const { t, i18n } = useTranslation();
   const [scrolled, setScrolled] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -19,7 +17,6 @@ function App() {
     
     window.addEventListener('scroll', handleScroll, { passive: true });
     
-    // Set language attribute for accessibility
     document.documentElement.lang = i18n.language;
     document.documentElement.setAttribute('data-scroll', window.scrollY > 0 ? '1' : '0');
     
@@ -37,6 +34,10 @@ function App() {
   return (
     <>
       <nav className="top-nav" aria-label="Main Navigation">
+        <div className="nav-links">
+          <Link to="/" className={location.pathname === '/' ? 'active' : ''}>{t('navHome')}</Link>
+          <Link to="/steps" className={location.pathname.startsWith('/steps') ? 'active' : ''}>{t('navSteps')}</Link>
+        </div>
         <div className="lang-switcher" aria-label="Language selection">
           <button 
             onClick={() => changeLanguage('en')} 
@@ -60,36 +61,11 @@ function App() {
       </nav>
 
       <main>
-        <header className="hero">
-          <h1>{t('hero.title')}</h1>
-          <p className="subtitle">{t('hero.subtitle')}</p>
-        </header>
-
-        <Section 
-          id="intro" 
-          title={t('introHeader')} 
-          text={t('introText')} 
-        />
-        <Section 
-          id="circle" 
-          title={t('circleHeader')} 
-          text={t('circleText')} 
-        />
-        <Section 
-          id="choice" 
-          title={t('choiceHeader')} 
-          text={t('choiceText')} 
-        />
-        <Section 
-          id="about-me" 
-          title={t('aboutMe.title')} 
-          text={t('aboutMe.text')} 
-        />
-        <Section 
-          id="about-show" 
-          title={t('aboutShow.title')} 
-          text={t('aboutShow.text')} 
-        />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/steps" element={<StepsList />} />
+          <Route path="/steps/:stepName" element={<StepDetail />} />
+        </Routes>
       </main>
 
       <footer>

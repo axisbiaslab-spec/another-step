@@ -2,6 +2,16 @@ import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 
+// Shared Lyrics
+import introLyrics from './content/intro/lyrics.md?raw';
+import song1Lyrics from './content/1-traces/lyrics.md?raw';
+import outroLyrics from './content/outro/lyrics.md?raw';
+
+// Shared Philosophy
+import introPhilosophy from './content/intro/philosophy.md?raw';
+import song1Philosophy from './content/1-traces/philosophy.md?raw';
+import outroPhilosophy from './content/outro/philosophy.md?raw';
+
 const resources = {
     en: {
         translation: {
@@ -17,7 +27,27 @@ const resources = {
             "circleHeader": "The Circle",
             "circleText": "Observe this circle. It stands as the boundary of your will. Everything within it—your thoughts, your choices, your actions—is entirely within your power. Everything outside—fate, the opinions of others, the unpredictable course of the world—is beyond your control. Do not squander your strength on what you cannot change. Master what lies within.",
             "choiceHeader": "Choice",
-            "choiceText": "Every moment of your life is a choice, and the sum of these decisions has brought you to this very point. Here, in this space, you will be called to make conscious choices. Remember: each manifest decision alters our direction, opening some paths and closing others forever. The road we travel depends on the will you exercise."
+            "choiceText": "Every moment of your life is a choice, and the sum of these decisions has brought you to this very point. Here, in this space, you will be called to make conscious choices. Remember: each manifest decision alters our direction, opening some paths and closing others forever. The road we travel depends on the will you exercise.",
+            "navSteps": "Steps",
+            "navHome": "Home",
+            "stepsTitle": "Chapters of the Journey",
+            "steps": {
+                "intro": {
+                    "title": "1. The Awakening (Intro)",
+                    "lyrics": `[Instrumental / Ambient]`,
+                    "philosophy": introPhilosophy
+                },
+                "song1": {
+                    "title": "2. First Choice (Song 1)",
+                    "lyrics": song1Lyrics,
+                    "philosophy": song1Philosophy
+                },
+                "outro": {
+                    "title": "3. The Return (Outro)",
+                    "lyrics": outroLyrics,
+                    "philosophy": outroPhilosophy
+                }
+            }
         }
     },
     ru: {
@@ -34,7 +64,27 @@ const resources = {
             "circleHeader": "Круг",
             "circleText": "Обрати внимание на этот круг. Он символизирует границу твоей воли. Всё, что находится внутри — твои мысли, твои выборы и твои поступки — всецело в твоей власти. Всё, что остается снаружи — судьба, мнения других людей и непредсказуемый ход мира — тебе неподвластно. Не растрачивай силы на то, что не можешь изменить. Овладей тем, что внутри.",
             "choiceHeader": "Выбор",
-            "choiceText": "Каждый миг твоей жизни — это выбор, и именно сумма этих решений привела тебя в сегодняшнюю точку. Здесь, на протяжении шоу, тебе предстоит совершать явные выборы. Помни: каждое принятое решение меняет направление нашего движения, открывая одни тропы и навсегда закрывая другие. Путь, по которому мы идем, зависит от твоей воли."
+            "choiceText": "Каждый миг твоей жизни — это выбор, и именно сумма этих решений привела тебя в сегодняшнюю точку. Здесь, на протяжении шоу, тебе предстоит совершать явные выборы. Помни: каждое принятое решение меняет направление нашего движения, открывая одни тропы и навсегда закрывая другие. Путь, по которому мы идем, зависит от твоей воли.",
+            "navSteps": "Шаги",
+            "navHome": "Главная",
+            "stepsTitle": "Главы путешествия",
+            "steps": {
+                "intro": {
+                    "title": "1. Пробуждение (Вступление)",
+                    "lyrics": `[Инструментал / Эмбиент]`,
+                    "philosophy": introPhilosophy
+                },
+                "song1": {
+                    "title": "2. Первый шаг (Песня 1)",
+                    "lyrics": song1Lyrics,
+                    "philosophy": song1Philosophy
+                },
+                "outro": {
+                    "title": "3. Возвращение (Завершение)",
+                    "lyrics": outroLyrics,
+                    "philosophy": outroPhilosophy
+                }
+            }
         }
     },
     sr: {
@@ -51,7 +101,27 @@ const resources = {
             "circleHeader": "Krug",
             "circleText": "Obrati pažnju na ovaj krug. On simbolizuje granicu tvoje volje. Sve što je unutar njega — tvoje misli, tvoji izbori i tvoji postupci — potpuno je u tvojoj moći. Sve što ostaje spolja — sudbina, mišljenja drugih ljudi i nepredvidivi tok sveta — van je tvoje kontrole. Ne gubi snagu na ono što ne možeš promeniti. Ovladaj onim što je unutra.",
             "choiceHeader": "Izbor",
-            "choiceText": "Svaki trenutak tvog života je izbor, i upravo je zbir tih odluka doveo tebe do ove tačke. Ovde, tokom predstave, donosićeš jasne izbore. Zapamti: svaka doneta odluka menja pravac našeg kretanja, otvarajući jedne staze i zauvek zatvarajući druge. Put kojim idemo zavisi od tvoje volje."
+            "choiceText": "Svaki trenutak tvog života je izbor, i upravo je zbir tih odluka doveo tebe do ove tačke. Ovde, tokom predstave, donosićeš jasne izbore. Zapamti: svaka doneta odluka menja pravac našeg kretanja, otvarajući jedne staze i zauvek zatvarajući druge. Put kojim idemo zavisi od tvoje volje.",
+            "navSteps": "Koraci",
+            "navHome": "Početna",
+            "stepsTitle": "Poglavlja putovanja",
+            "steps": {
+                "intro": {
+                    "title": "1. Buđenje (Uvod)",
+                    "lyrics": introLyrics,
+                    "philosophy": introPhilosophy
+                },
+                "song1": {
+                    "title": "2. Prvi korak (Pesma 1)",
+                    "lyrics": song1Lyrics,
+                    "philosophy": song1Philosophy
+                },
+                "outro": {
+                    "title": "3. Povratak (Završetak)",
+                    "lyrics": outroLyrics,
+                    "philosophy": outroPhilosophy
+                }
+            }
         }
     }
 };
