@@ -1,0 +1,28 @@
+<svg viewBox="-5 -5 110 110" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <filter id="glow-gold-icon" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="1" result="blur1" />
+            <feMerge>
+                <feMergeNode in="blur1" />
+                <feMergeNode in="SourceGraphic" />
+            </feMerge>
+        </filter>
+        <filter id="glow-green-icon" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="1" result="blur1" />
+            <feMerge>
+                <feMergeNode in="blur1" />
+                <feMergeNode in="SourceGraphic" />
+            </feMerge>
+        </filter>
+    </defs>
+    <g filter="url(#glow-gold-icon)">
+        <circle cx="50" cy="50" r="48" stroke="#ffea8c" stroke-width="2" fill="none" />
+        <circle cx="50" cy="50" r="41" stroke="#ffea8c" stroke-width="2" fill="none" />
+        <line x1="50" y1="5" x2="50" y2="35" stroke="#ffea8c" stroke-width="2" />
+        <line x1="50" y1="48" x2="50" y2="95" stroke="#ffea8c" stroke-width="2" />
+    </g>
+    <g filter="url(#glow-green-icon)">
+        <line x1="46.5" y1="94.5" x2="53.5" y2="5.5" stroke="#9de354" stroke-width="2" />
+        <line x1="40" y1="40" x2="60" y2="44" stroke="#9de354" stroke-width="2" />
+    </g>
+</svg>
