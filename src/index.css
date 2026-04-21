@@ -14,17 +14,19 @@
 }
 
 @font-face {
-    font-family: 'Courier New Cyr';
-    src: url('/fonts/Courier New Cyr.ttf') format('truetype');
+    font-family: 'Courier New';
+    src: url('fonts/subset-CourierNewPSMT.woff2') format('woff2');
     font-weight: normal;
     font-style: normal;
+    font-display: swap; /* Критически важно */
 }
 
 @font-face {
-    font-family: 'Courier New';
-    src: url('/fonts/Courier New.ttf') format('truetype');
+    font-family: 'Courier New Cyr';
+    src: url('fonts/subset-CourierCyrPS.woff2') format('woff2');
     font-weight: normal;
     font-style: normal;
+    font-display: swap; /* Критически важно */
 }
 
 * {
