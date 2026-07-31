@@ -179,6 +179,13 @@ body {
     margin-bottom: 3rem;
 }
 
+.card-instance {
+    color: var(--text-secondary);
+    font-family: "Courier New Cyr", "Courier New", Courier, monospace;
+    letter-spacing: 0.1em;
+    margin-top: 0.5rem;
+}
+
 h1 {
     font-size: clamp(2rem, 5vw, 3rem);
     font-family: "Courier New Cyr", "Courier New", Courier, monospace;

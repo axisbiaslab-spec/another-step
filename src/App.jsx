@@ -4,6 +4,7 @@ import { Routes, Route, Link, useLocation } from 'react-router-dom';
 import Home from './pages/Home';
 import StepsList from './pages/StepsList';
 import StepDetail from './pages/StepDetail';
+import CardDetail from './pages/CardDetail';
 
 function App() {
   const { t, i18n } = useTranslation();
@@ -69,6 +70,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/steps" element={<StepsList />} />
           <Route path="/steps/:stepName" element={<StepDetail />} />
+          <Route path="/card/:slug" element={<CardDetail />} />
         </Routes>
       </main>
 
