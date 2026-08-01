@@ -211,6 +211,9 @@ body {
     opacity: 0;
     transform: translateY(50px) scale(0.9) rotateX(-25deg);
     transition: opacity 0.6s ease-out;
+}
+
+.tilt-card--active {
     will-change: transform;
 }
 

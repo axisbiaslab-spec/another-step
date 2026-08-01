@@ -6,14 +6,26 @@ const clamp01 = (v) => Math.min(1, Math.max(0, v));
 
 function TiltCard({ src, alt }) {
   const wrapRef = useRef(null);
+  const imgRef = useRef(null);
   const [entered, setEntered] = useState(false);
   const [active, setActive] = useState(false);
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
   const [glare, setGlare] = useState({ x: 50, y: 50, opacity: 0 });
 
+  const revealAfterLoad = () => {
+    // Some mobile WebKit builds fail to repaint content inside a
+    // perspective/preserve-3d element once an async image finishes
+    // loading, until something else forces a reflow — read a layout
+    // property here to nudge that reflow before we fade the card in.
+    // eslint-disable-next-line no-unused-expressions
+    wrapRef.current?.offsetHeight;
+    setEntered(true);
+  };
+
   useEffect(() => {
-    const id = requestAnimationFrame(() => setEntered(true));
-    return () => cancelAnimationFrame(id);
+    if (imgRef.current?.complete) {
+      revealAfterLoad();
+    }
   }, []);
 
   const updateFromPoint = (clientX, clientY) => {
@@ -55,7 +67,14 @@ function TiltCard({ src, alt }) {
         onPointerUp={resetTilt}
         onPointerCancel={resetTilt}
       >
-        <img className="card-image" src={src} alt={alt} draggable={false} />
+        <img
+          ref={imgRef}
+          className="card-image"
+          src={src}
+          alt={alt}
+          draggable={false}
+          onLoad={revealAfterLoad}
+        />
         <div
           className="tilt-card-glare"
           style={{
