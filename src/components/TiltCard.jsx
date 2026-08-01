@@ -1,17 +1,22 @@
 import React, { useEffect, useRef, useState } from 'react';
 
 const MAX_TILT = 16; // degrees
+const DEVICE_TILT_RANGE = 18; // degrees of physical phone tilt that maps to full MAX_TILT
 
 const clamp01 = (v) => Math.min(1, Math.max(0, v));
+const clamp = (v, min, max) => Math.min(max, Math.max(min, v));
 
 function TiltCard({ src, alt, backText, glowKey = 'major' }) {
   const wrapRef = useRef(null);
   const imgRef = useRef(null);
+  const baselineRef = useRef(null);
+  const activeRef = useRef(false);
   const [entered, setEntered] = useState(false);
   const [active, setActive] = useState(false);
   const [flipped, setFlipped] = useState(false);
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
   const [glare, setGlare] = useState({ x: 50, y: 50, opacity: 0 });
+  const motionEnabledRef = useRef(false);
 
   const revealAfterLoad = () => {
     // Some mobile WebKit builds fail to repaint content inside a
@@ -29,6 +34,40 @@ function TiltCard({ src, alt, backText, glowKey = 'major' }) {
     }
   }, []);
 
+  const handleOrientation = (e) => {
+    if (activeRef.current) return; // an active touch-drag takes priority
+    if (e.beta === null || e.gamma === null) return;
+    if (baselineRef.current === null) {
+      baselineRef.current = { beta: e.beta, gamma: e.gamma };
+    }
+    const dBeta = e.beta - baselineRef.current.beta;
+    const dGamma = e.gamma - baselineRef.current.gamma;
+    setTilt({
+      x: clamp(-(dBeta / DEVICE_TILT_RANGE) * MAX_TILT, -MAX_TILT, MAX_TILT),
+      y: clamp((dGamma / DEVICE_TILT_RANGE) * MAX_TILT, -MAX_TILT, MAX_TILT),
+    });
+  };
+
+  const startMotion = () => {
+    if (motionEnabledRef.current) return;
+    motionEnabledRef.current = true;
+    window.addEventListener('deviceorientation', handleOrientation);
+  };
+
+  useEffect(() => {
+    const isCoarsePointer = window.matchMedia('(pointer: coarse)').matches;
+    if (!isCoarsePointer || typeof window.DeviceOrientationEvent === 'undefined') return;
+
+    // Skip entirely where this would require an explicit permission
+    // prompt (iOS Safari) — not worth the extra friction/dialog here.
+    if (typeof DeviceOrientationEvent.requestPermission === 'function') return;
+
+    startMotion();
+
+    return () => window.removeEventListener('deviceorientation', handleOrientation);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const updateFromPoint = (clientX, clientY) => {
     const el = wrapRef.current;
     if (!el) return;
@@ -44,14 +83,22 @@ function TiltCard({ src, alt, backText, glowKey = 'major' }) {
   };
 
   const handlePointerMove = (e) => {
+    activeRef.current = true;
     setActive(true);
     updateFromPoint(e.clientX, e.clientY);
   };
 
   const resetTilt = () => {
+    activeRef.current = false;
     setActive(false);
-    setTilt({ x: 0, y: 0 });
     setGlare((g) => ({ ...g, opacity: 0 }));
+    if (!motionEnabledRef.current) {
+      setTilt({ x: 0, y: 0 });
+    }
+  };
+
+  const handleClick = () => {
+    setFlipped((f) => !f);
   };
 
   return (
@@ -67,7 +114,7 @@ function TiltCard({ src, alt, backText, glowKey = 'major' }) {
         onPointerLeave={resetTilt}
         onPointerUp={resetTilt}
         onPointerCancel={resetTilt}
-        onClick={() => setFlipped((f) => !f)}
+        onClick={handleClick}
       >
         <div className={`flip-card-inner ${flipped ? 'flip-card-inner--flipped' : ''}`}>
           <div className="flip-card-face flip-card-front">
