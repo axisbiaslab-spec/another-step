@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import registry from '../content/tarot/registry.json';
 import arcana from '../content/tarot/arcana.json';
 import TiltCard from '../components/TiltCard';
+import ActivateCard from '../components/ActivateCard';
 
 const LANGS = ['en', 'ru', 'sr'];
 
@@ -19,6 +20,7 @@ function CardDetail() {
   const { slug } = useParams();
   const [searchParams] = useSearchParams();
   const cardId = searchParams.get('id');
+  const cardCode = searchParams.get('code');
   const { i18n } = useTranslation();
 
   const meta = cardsBySlug[slug];
@@ -53,6 +55,8 @@ function CardDetail() {
           />
         </div>
         <p className="card-flip-hint">{FLIP_HINT[lang]}</p>
+
+        <ActivateCard id={cardId} code={cardCode} lang={lang} />
       </section>
     </div>
   );

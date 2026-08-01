@@ -361,6 +361,50 @@ body {
     margin-top: 1rem;
 }
 
+.activate-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1.5rem;
+}
+
+.activate-card-btn {
+    background: var(--btn-bg);
+    color: var(--logo-gold);
+    border: 1px solid var(--logo-gold);
+    padding: 0.7rem 1.6rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    text-shadow: 0 0 8px var(--logo-gold-glow);
+    box-shadow: 0 0 10px var(--logo-gold-glow);
+    transition: all 0.2s ease;
+}
+
+.activate-card-btn:hover:not(:disabled) {
+    background: rgba(255, 234, 140, 0.08);
+}
+
+.activate-card-btn:disabled {
+    opacity: 0.6;
+    cursor: default;
+}
+
+.activate-card-done {
+    color: var(--logo-green);
+    text-shadow: 0 0 8px var(--logo-green-glow);
+    font-size: 0.95rem;
+    letter-spacing: 0.03em;
+}
+
+.activate-card-error {
+    color: #ff7676;
+    font-size: 0.85rem;
+}
+
 h1 {
     font-size: clamp(2rem, 5vw, 3rem);
     font-family: "Courier New Cyr", "Courier New", Courier, monospace;
