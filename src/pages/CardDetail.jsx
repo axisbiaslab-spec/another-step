@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useParams, useSearchParams, Link, Navigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import registry from '../content/tarot/registry.json';
@@ -6,6 +6,12 @@ import arcana from '../content/tarot/arcana.json';
 import TiltCard from '../components/TiltCard';
 
 const LANGS = ['en', 'ru', 'sr'];
+
+const FLIP_HINT = {
+  en: 'Tap the card to read its meaning',
+  ru: 'Коснитесь карты, чтобы увидеть трактовку',
+  sr: 'Dodirnite kartu da vidite značenje',
+};
 
 const cardsBySlug = Object.fromEntries(registry.map((card) => [card.slug, card]));
 
@@ -18,15 +24,13 @@ function CardDetail() {
   const meta = cardsBySlug[slug];
   const text = arcana[slug];
 
-  const initialLang = LANGS.includes(i18n.resolvedLanguage) ? i18n.resolvedLanguage : 'en';
-  const [activeLang, setActiveLang] = useState(initialLang);
-
   if (!meta || !text) {
     return <Navigate to="/" replace />;
   }
 
-  const name = meta.name[activeLang] || meta.name.en;
-  const description = text[activeLang] || text.en;
+  const lang = LANGS.includes(i18n.resolvedLanguage) ? i18n.resolvedLanguage : 'en';
+  const name = meta.name[lang] || meta.name.en;
+  const description = text[lang] || text.en;
 
   return (
     <div className="step-detail card-detail">
@@ -41,25 +45,14 @@ function CardDetail() {
 
       <section className="step-content">
         <div className="card-image-container">
-          <TiltCard src={`/tarot/${slug}.jpg`} alt={name} />
+          <TiltCard
+            src={`/tarot/${slug}.jpg`}
+            alt={name}
+            backText={description}
+            glowKey={meta.suit || meta.arcana}
+          />
         </div>
-
-        <div className="step-philosophy">
-          <div className="tabs-container">
-            {LANGS.map((lang) => (
-              <button
-                key={lang}
-                className={`tab-btn ${activeLang === lang ? 'active' : ''}`}
-                onClick={() => setActiveLang(lang)}
-              >
-                {lang.toUpperCase()}
-              </button>
-            ))}
-          </div>
-          <div className="philosophy-content">
-            <p>{description}</p>
-          </div>
-        </div>
+        <p className="card-flip-hint">{FLIP_HINT[lang]}</p>
       </section>
     </div>
   );

@@ -4,11 +4,12 @@ const MAX_TILT = 16; // degrees
 
 const clamp01 = (v) => Math.min(1, Math.max(0, v));
 
-function TiltCard({ src, alt }) {
+function TiltCard({ src, alt, backText, glowKey = 'major' }) {
   const wrapRef = useRef(null);
   const imgRef = useRef(null);
   const [entered, setEntered] = useState(false);
   const [active, setActive] = useState(false);
+  const [flipped, setFlipped] = useState(false);
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
   const [glare, setGlare] = useState({ x: 50, y: 50, opacity: 0 });
 
@@ -54,7 +55,7 @@ function TiltCard({ src, alt }) {
   };
 
   return (
-    <div className="tilt-card-scene">
+    <div className={`tilt-card-scene tilt-card-scene--${glowKey}`}>
       <div
         ref={wrapRef}
         className={`tilt-card ${entered ? 'tilt-card--entered' : ''} ${active ? 'tilt-card--active' : ''}`}
@@ -66,15 +67,25 @@ function TiltCard({ src, alt }) {
         onPointerLeave={resetTilt}
         onPointerUp={resetTilt}
         onPointerCancel={resetTilt}
+        onClick={() => setFlipped((f) => !f)}
       >
-        <img
-          ref={imgRef}
-          className="card-image"
-          src={src}
-          alt={alt}
-          draggable={false}
-          onLoad={revealAfterLoad}
-        />
+        <div className={`flip-card-inner ${flipped ? 'flip-card-inner--flipped' : ''}`}>
+          <div className="flip-card-face flip-card-front">
+            <img
+              ref={imgRef}
+              className="card-image"
+              src={src}
+              alt={alt}
+              draggable={false}
+              onLoad={revealAfterLoad}
+            />
+          </div>
+          <div className="flip-card-face flip-card-back">
+            <div className="flip-card-back-content">
+              <p>{backText}</p>
+            </div>
+          </div>
+        </div>
         <div
           className="tilt-card-glare"
           style={{

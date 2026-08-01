@@ -36,34 +36,38 @@ function App() {
     i18n.changeLanguage(lng);
   };
 
+  const isCardPage = location.pathname.startsWith('/card');
+
   return (
     <>
-      <nav className="top-nav" aria-label="Main Navigation">
-        <div className="nav-links">
-          <Link to="/" className={location.pathname === '/' ? 'active' : ''}>{t('navHome')}</Link>
-          <Link to="/steps" className={location.pathname.startsWith('/steps') ? 'active' : ''}>{t('navSteps')}</Link>
-        </div>
-        <div className="lang-switcher" aria-label="Language selection">
-          <button 
-            onClick={() => changeLanguage('en')} 
-            className={i18n.resolvedLanguage === 'en' ? 'active' : ''}
-          >
-            EN
-          </button>
-          <button 
-            onClick={() => changeLanguage('ru')} 
-            className={i18n.resolvedLanguage === 'ru' ? 'active' : ''}
-          >
-            RU
-          </button>
-          <button 
-            onClick={() => changeLanguage('sr')} 
-            className={i18n.resolvedLanguage === 'sr' ? 'active' : ''}
-          >
-            SR
-          </button>
-        </div>
-      </nav>
+      {!isCardPage && (
+        <nav className="top-nav" aria-label="Main Navigation">
+          <div className="nav-links">
+            <Link to="/" className={location.pathname === '/' ? 'active' : ''}>{t('navHome')}</Link>
+            <Link to="/steps" className={location.pathname.startsWith('/steps') ? 'active' : ''}>{t('navSteps')}</Link>
+          </div>
+          <div className="lang-switcher" aria-label="Language selection">
+            <button
+              onClick={() => changeLanguage('en')}
+              className={i18n.resolvedLanguage === 'en' ? 'active' : ''}
+            >
+              EN
+            </button>
+            <button
+              onClick={() => changeLanguage('ru')}
+              className={i18n.resolvedLanguage === 'ru' ? 'active' : ''}
+            >
+              RU
+            </button>
+            <button
+              onClick={() => changeLanguage('sr')}
+              className={i18n.resolvedLanguage === 'sr' ? 'active' : ''}
+            >
+              SR
+            </button>
+          </div>
+        </nav>
+      )}
 
       <main>
         <Routes>
