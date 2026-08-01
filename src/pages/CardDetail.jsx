@@ -3,6 +3,7 @@ import { useParams, useSearchParams, Link, Navigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import registry from '../content/tarot/registry.json';
 import arcana from '../content/tarot/arcana.json';
+import placeholders from '../content/tarot/placeholders.json';
 import TiltCard from '../components/TiltCard';
 import ActivateCard from '../components/ActivateCard';
 
@@ -49,6 +50,7 @@ function CardDetail() {
         <div className="card-image-container">
           <TiltCard
             src={`/tarot/${slug}.jpg`}
+            placeholderSrc={placeholders[slug]}
             alt={name}
             backText={description}
             glowKey={meta.suit || meta.arcana}

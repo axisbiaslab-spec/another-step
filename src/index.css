@@ -344,6 +344,26 @@ body {
     pointer-events: none;
 }
 
+.card-image--placeholder {
+    position: absolute;
+    inset: 0;
+    filter: blur(14px);
+    transform: scale(1.15);
+}
+
+.card-image--full {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    filter: blur(18px);
+    transition: opacity 0.5s ease-out, filter 0.5s ease-out;
+}
+
+.card-image--full-visible {
+    opacity: 1;
+    filter: blur(0);
+}
+
 .tilt-card-glare {
     position: absolute;
     inset: 0;
