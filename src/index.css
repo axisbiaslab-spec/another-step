@@ -186,6 +186,67 @@ body {
     margin-top: 0.5rem;
 }
 
+.card-detail.step-detail .step-header {
+    padding-bottom: 1rem;
+    margin-bottom: 0;
+}
+
+.card-detail .step-content {
+    gap: 1.5rem;
+}
+
+.card-image-container {
+    display: flex;
+    justify-content: center;
+}
+
+.tilt-card-scene {
+    perspective: 1200px;
+}
+
+.tilt-card {
+    position: relative;
+    width: min(60vw, 240px);
+    transform-style: preserve-3d;
+    opacity: 0;
+    transform: translateY(50px) scale(0.9) rotateX(-25deg);
+    transition: opacity 0.6s ease-out;
+    will-change: transform;
+}
+
+.tilt-card--entered:not(.tilt-card--active) {
+    opacity: 1;
+    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.6s ease-out, box-shadow 0.3s ease-out;
+}
+
+.tilt-card--entered {
+    opacity: 1;
+}
+
+.tilt-card--active {
+    transition: transform 0.12s ease-out, box-shadow 0.3s ease-out;
+}
+
+.tilt-card .card-image {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 4.5% / 3.2%;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    -webkit-user-select: none;
+    user-select: none;
+    pointer-events: none;
+}
+
+.tilt-card-glare {
+    position: absolute;
+    inset: 0;
+    border-radius: 4.5% / 3.2%;
+    mix-blend-mode: overlay;
+    transition: opacity 0.25s ease-out;
+    pointer-events: none;
+}
+
 h1 {
     font-size: clamp(2rem, 5vw, 3rem);
     font-family: "Courier New Cyr", "Courier New", Courier, monospace;

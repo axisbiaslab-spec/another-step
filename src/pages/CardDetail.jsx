@@ -3,6 +3,7 @@ import { useParams, useSearchParams, Link, Navigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import registry from '../content/tarot/registry.json';
 import arcana from '../content/tarot/arcana.json';
+import TiltCard from '../components/TiltCard';
 
 const LANGS = ['en', 'ru', 'sr'];
 
@@ -39,6 +40,10 @@ function CardDetail() {
       </header>
 
       <section className="step-content">
+        <div className="card-image-container">
+          <TiltCard src={`/tarot/${slug}.jpg`} alt={name} />
+        </div>
+
         <div className="step-philosophy">
           <div className="tabs-container">
             {LANGS.map((lang) => (
