@@ -5,6 +5,7 @@ import registry from '../content/tarot/registry.json';
 import arcana from '../content/tarot/arcana.json';
 import placeholders from '../content/tarot/placeholders.json';
 import rwsPlaceholders from '../content/tarot/rws-placeholders.json';
+import testCards from '../content/tarot/test-cards.json';
 import TiltCard from '../components/TiltCard';
 
 const LANGS = ['en', 'ru', 'sr'];
@@ -24,8 +25,10 @@ function CardDetail() {
   const cardCode = searchParams.get('code');
   const { i18n } = useTranslation();
 
-  const meta = cardsBySlug[slug];
-  const text = arcana[slug];
+  // test-sun is a standalone NFC hardware-testing card — not part of the
+  // real registry/arcana content pipeline, so it never touches deck codes.
+  const meta = cardsBySlug[slug] || testCards.meta[slug];
+  const text = arcana[slug] || testCards.arcana[slug];
 
   if (!meta || !text) {
     return <Navigate to="/" replace />;

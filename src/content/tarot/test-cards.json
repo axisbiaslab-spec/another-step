@@ -1,0 +1,20 @@
+{
+  "meta": {
+    "test-sun": {
+      "slug": "test-sun",
+      "arcana": "major",
+      "number": null,
+      "suit": null,
+      "name": { "en": "Test — The Sun", "ru": "Тест — Солнце", "sr": "Test — Sunce" }
+    }
+  },
+  "arcana": {
+    "test-sun": {
+      "en": "This is a test card used to check NFC scanning and the activation flow — not part of the real deck.",
+      "ru": "Это тестовая карта для проверки сканирования NFC и работы активации — не часть настоящей колоды.",
+      "sr": "Ovo je test kartica za proveru NFC skeniranja i aktivacije — nije deo prave špil karata.",
+      "author": "",
+      "source": ""
+    }
+  }
+}
