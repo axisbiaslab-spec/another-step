@@ -38,6 +38,7 @@ function TiltCard({
   const rwsImgRef = useRef(null);
   const baselineRef = useRef(null);
   const activeRef = useRef(false);
+  const pointerDownRef = useRef(null);
   const [entered, setEntered] = useState(false);
   const [fullLoaded, setFullLoaded] = useState(false);
   const [rwsLoaded, setRwsLoaded] = useState(false);
@@ -150,6 +151,34 @@ function TiltCard({
     }
   };
 
+  // Some mobile Chrome builds don't reliably synthesize a `click` after a
+  // touch on an element with `touch-action: none` (varies by device) — tap
+  // detection is driven directly off pointer down/up instead, so flipping
+  // never depends on the browser's click synthesis at all.
+  const TAP_MAX_DISTANCE = 12;
+  const TAP_MAX_DURATION_MS = 500;
+
+  const handlePointerDown = (e) => {
+    pointerDownRef.current = { x: e.clientX, y: e.clientY, time: Date.now() };
+  };
+
+  const handlePointerUp = (e) => {
+    resetTilt();
+    const start = pointerDownRef.current;
+    pointerDownRef.current = null;
+    if (!start) return;
+    const dist = Math.hypot(e.clientX - start.x, e.clientY - start.y);
+    const duration = Date.now() - start.time;
+    if (dist <= TAP_MAX_DISTANCE && duration <= TAP_MAX_DURATION_MS) {
+      handleClick();
+    }
+  };
+
+  const cancelPointer = () => {
+    pointerDownRef.current = null;
+    resetTilt();
+  };
+
   // Nudges the card via the same `transition: transform` path that drives
   // real flips (rather than a separate CSS `animation`), so the very first
   // click never collides with a still-running keyframe animation on the
@@ -225,11 +254,11 @@ function TiltCard({
           transform: `rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`,
           touchAction: 'none',
         }}
+        onPointerDown={handlePointerDown}
         onPointerMove={handlePointerMove}
-        onPointerLeave={resetTilt}
-        onPointerUp={resetTilt}
-        onPointerCancel={resetTilt}
-        onClick={handleClick}
+        onPointerLeave={cancelPointer}
+        onPointerUp={handlePointerUp}
+        onPointerCancel={cancelPointer}
       >
         <div
           className={`flip-card-inner ${celebrating ? 'flip-card-inner--celebrating' : ''}`}
@@ -300,7 +329,12 @@ function TiltCard({
               <p>{backText}</p>
               {attribution && <p className="flip-card-attribution">— {attribution}</p>}
             </div>
-            <div className="flip-card-activate-slot" onClick={(e) => e.stopPropagation()}>
+            <div
+              className="flip-card-activate-slot"
+              onClick={(e) => e.stopPropagation()}
+              onPointerDown={(e) => e.stopPropagation()}
+              onPointerUp={(e) => e.stopPropagation()}
+            >
               <ActivateCard id={cardId} code={cardCode} lang={lang} onActivated={handleActivated} />
             </div>
           </div>
