@@ -1,12 +1,26 @@
 import React, { useEffect, useRef, useState } from 'react';
+import ActivateCard from './ActivateCard';
 
 const MAX_TILT = 16; // degrees
 const DEVICE_TILT_RANGE = 18; // degrees of physical phone tilt that maps to full MAX_TILT
+const SPARK_COUNT = 14;
+const CELEBRATE_SPIN_DEG = 900; // 2.5 extra full turns — always lands back on a "front visible" angle
+const CELEBRATE_DURATION_MS = 1100;
+const FLASH_DURATION_MS = 550;
 
 const clamp01 = (v) => Math.min(1, Math.max(0, v));
 const clamp = (v, min, max) => Math.min(max, Math.max(min, v));
 
-function TiltCard({ src, placeholderSrc, alt, backText, attribution, glowKey = 'major' }) {
+function isAlreadyUnlocked(cardCode) {
+  if (!cardCode) return true; // no activation gate at all without a code
+  try {
+    return localStorage.getItem(`card-activated:${cardCode}`) === '1';
+  } catch {
+    return false;
+  }
+}
+
+function TiltCard({ src, placeholderSrc, alt, backText, attribution, glowKey = 'major', cardId, cardCode, lang }) {
   const wrapRef = useRef(null);
   const imgRef = useRef(null);
   const baselineRef = useRef(null);
@@ -14,7 +28,12 @@ function TiltCard({ src, placeholderSrc, alt, backText, attribution, glowKey = '
   const [entered, setEntered] = useState(false);
   const [fullLoaded, setFullLoaded] = useState(false);
   const [active, setActive] = useState(false);
-  const [flipped, setFlipped] = useState(false);
+  const [rotation, setRotation] = useState(0); // multiples of 180 = flip state; keeps climbing, never resets
+  const [hasFlippedOnce, setHasFlippedOnce] = useState(false);
+  const [celebrating, setCelebrating] = useState(false);
+  const [showFlash, setShowFlash] = useState(false);
+  const [unlocked, setUnlocked] = useState(() => isAlreadyUnlocked(cardCode));
+  const [glowBoost, setGlowBoost] = useState(() => isAlreadyUnlocked(cardCode) && Boolean(cardCode));
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
   const [glare, setGlare] = useState({ x: 50, y: 50, opacity: 0 });
   const motionEnabledRef = useRef(false);
@@ -108,11 +127,38 @@ function TiltCard({ src, placeholderSrc, alt, backText, attribution, glowKey = '
   };
 
   const handleClick = () => {
-    setFlipped((f) => !f);
+    if (celebrating) return;
+    setRotation((r) => r + 180);
+    setHasFlippedOnce(true);
+  };
+
+  const handleActivated = ({ replay } = {}) => {
+    if (replay) {
+      // Restored from a previous visit — already unlocked, no fireworks.
+      setUnlocked(true);
+      setGlowBoost(true);
+      return;
+    }
+    setCelebrating(true);
+    setShowFlash(true);
+    setUnlocked(true); // un-blurs the image over the course of the spin
+    setRotation((r) => r + CELEBRATE_SPIN_DEG);
+    setTimeout(() => setShowFlash(false), FLASH_DURATION_MS);
+    setTimeout(() => {
+      setCelebrating(false);
+      setGlowBoost(true); // stays boosted permanently once activated
+    }, CELEBRATE_DURATION_MS);
   };
 
   return (
-    <div className={`tilt-card-scene tilt-card-scene--${glowKey}`}>
+    <div
+      className={`tilt-card-scene tilt-card-scene--${glowKey} ${glowBoost ? 'tilt-card-scene--boost' : ''}`}
+      style={
+        !unlocked
+          ? { '--card-glow': 'rgba(190, 190, 190, 0.4)', '--card-glow-soft': 'rgba(190, 190, 190, 0.1)' }
+          : undefined
+      }
+    >
       <div
         ref={wrapRef}
         className={`tilt-card ${entered ? 'tilt-card--entered' : ''} ${active ? 'tilt-card--active' : ''}`}
@@ -126,7 +172,12 @@ function TiltCard({ src, placeholderSrc, alt, backText, attribution, glowKey = '
         onPointerCancel={resetTilt}
         onClick={handleClick}
       >
-        <div className={`flip-card-inner ${flipped ? 'flip-card-inner--flipped' : ''}`}>
+        <div
+          className={`flip-card-inner ${celebrating ? 'flip-card-inner--celebrating' : ''} ${
+            !hasFlippedOnce && entered && !celebrating ? 'flip-card-inner--peek' : ''
+          }`}
+          style={{ transform: `rotateY(${rotation}deg)` }}
+        >
           <div className="flip-card-face flip-card-front">
             {placeholderSrc && (
               <img
@@ -139,7 +190,9 @@ function TiltCard({ src, placeholderSrc, alt, backText, attribution, glowKey = '
             )}
             <img
               ref={imgRef}
-              className={`card-image card-image--full ${fullLoaded ? 'card-image--full-visible' : ''}`}
+              className={`card-image card-image--full ${fullLoaded ? 'card-image--full-visible' : ''} ${
+                !unlocked ? 'card-image--locked' : ''
+              }`}
               src={src}
               alt={alt}
               draggable={false}
@@ -151,6 +204,9 @@ function TiltCard({ src, placeholderSrc, alt, backText, attribution, glowKey = '
               <p>{backText}</p>
               {attribution && <p className="flip-card-attribution">— {attribution}</p>}
             </div>
+            <div className="flip-card-activate-slot" onClick={(e) => e.stopPropagation()}>
+              <ActivateCard id={cardId} code={cardCode} lang={lang} onActivated={handleActivated} />
+            </div>
           </div>
         </div>
         <div
@@ -160,6 +216,18 @@ function TiltCard({ src, placeholderSrc, alt, backText, attribution, glowKey = '
             opacity: glare.opacity,
           }}
         />
+        {showFlash && <div className="tilt-card-flash" />}
+        {celebrating && (
+          <div className="tilt-card-sparks">
+            {Array.from({ length: SPARK_COUNT }).map((_, i) => (
+              <span
+                key={i}
+                className="tilt-card-spark"
+                style={{ '--angle': `${(360 / SPARK_COUNT) * i}deg`, '--delay': `${(i % 4) * 0.03}s` }}
+              />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

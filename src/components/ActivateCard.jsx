@@ -30,7 +30,7 @@ async function activateCardStub({ id, code }) {
   return { activated: true };
 }
 
-function ActivateCard({ id, code, lang }) {
+function ActivateCard({ id, code, lang, onActivated }) {
   const [status, setStatus] = useState('idle'); // idle | pending | done | error
   const t = COPY[lang] || COPY.en;
   const storageKey = code ? `card-activated:${code}` : null;
@@ -38,7 +38,9 @@ function ActivateCard({ id, code, lang }) {
   useEffect(() => {
     if (storageKey && localStorage.getItem(storageKey) === '1') {
       setStatus('done');
+      onActivated?.({ replay: true });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [storageKey]);
 
   if (!code) return null;
@@ -50,6 +52,7 @@ function ActivateCard({ id, code, lang }) {
       if (result.activated) {
         localStorage.setItem(storageKey, '1');
         setStatus('done');
+        onActivated?.({ replay: false });
       } else {
         setStatus('error');
       }
