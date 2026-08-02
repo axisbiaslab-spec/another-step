@@ -29,6 +29,7 @@ function TiltCard({ src, placeholderSrc, alt, backText, attribution, glowKey = '
   const [fullLoaded, setFullLoaded] = useState(false);
   const [active, setActive] = useState(false);
   const [rotation, setRotation] = useState(0); // multiples of 180 = flip state; keeps climbing, never resets
+  const [peekOffset, setPeekOffset] = useState(0);
   const [hasFlippedOnce, setHasFlippedOnce] = useState(false);
   const [celebrating, setCelebrating] = useState(false);
   const [showFlash, setShowFlash] = useState(false);
@@ -126,8 +127,23 @@ function TiltCard({ src, placeholderSrc, alt, backText, attribution, glowKey = '
     }
   };
 
+  // Nudges the card via the same `transition: transform` path that drives
+  // real flips (rather than a separate CSS `animation`), so the very first
+  // click never collides with a still-running keyframe animation on the
+  // same property — that collision was making the first flip snap instead
+  // of transitioning.
+  useEffect(() => {
+    if (hasFlippedOnce || celebrating || !entered) return;
+    const loop = setInterval(() => {
+      setPeekOffset(-22);
+      setTimeout(() => setPeekOffset(0), 500);
+    }, 4500);
+    return () => clearInterval(loop);
+  }, [hasFlippedOnce, celebrating, entered]);
+
   const handleClick = () => {
     if (celebrating) return;
+    setPeekOffset(0);
     setRotation((r) => r + 180);
     setHasFlippedOnce(true);
   };
@@ -173,10 +189,8 @@ function TiltCard({ src, placeholderSrc, alt, backText, attribution, glowKey = '
         onClick={handleClick}
       >
         <div
-          className={`flip-card-inner ${celebrating ? 'flip-card-inner--celebrating' : ''} ${
-            !hasFlippedOnce && entered && !celebrating ? 'flip-card-inner--peek' : ''
-          }`}
-          style={{ transform: `rotateY(${rotation}deg)` }}
+          className={`flip-card-inner ${celebrating ? 'flip-card-inner--celebrating' : ''}`}
+          style={{ transform: `rotateY(${rotation + peekOffset}deg)` }}
         >
           <div className="flip-card-face flip-card-front">
             {placeholderSrc && (
