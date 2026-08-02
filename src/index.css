@@ -262,6 +262,15 @@ body {
     animation: backlight-shimmer 3s ease-in-out infinite;
 }
 
+.tilt-card-scene--boost {
+    animation: card-float 4s ease-in-out infinite;
+}
+
+@keyframes card-float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
+
 @keyframes backlight-shimmer {
     0%, 100% { opacity: 0.85; transform: scale(1.15); }
     50% { opacity: 1; transform: scale(1.3); }
@@ -405,6 +414,26 @@ body {
 
 .card-image--full-visible.card-image--locked {
     filter: grayscale(1) brightness(0.85);
+}
+
+.card-lock-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 26px;
+    height: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.55);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    color: #b8b8b8;
+    z-index: 2;
+}
+
+.card-lock-badge svg {
+    display: block;
 }
 
 .tilt-card-glare {
