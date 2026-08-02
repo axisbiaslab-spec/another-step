@@ -402,8 +402,43 @@ body {
     filter: blur(0);
 }
 
-.card-image--full-visible.card-image--locked {
-    filter: grayscale(1) brightness(0.85);
+.card-rws-layer {
+    position: absolute;
+    inset: 0;
+    opacity: 1;
+    transition: opacity 0.9s ease-out;
+    z-index: 1;
+}
+
+.card-rws-layer--hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.card-image--rws-color {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    filter: brightness(0.85) blur(18px);
+    transition: opacity 0.5s ease-out, filter 0.9s ease-out;
+}
+
+.card-image--rws-color-visible {
+    opacity: 1;
+    filter: brightness(0.85) blur(0);
+}
+
+.card-image--rws {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    filter: grayscale(1) brightness(0.85) blur(18px);
+    transition: opacity 0.5s ease-out, filter 0.9s ease-out;
+}
+
+.card-image--rws-visible {
+    opacity: 1;
+    filter: grayscale(1) brightness(0.85) blur(0);
 }
 
 .card-lock-badge {
@@ -433,6 +468,7 @@ body {
     mix-blend-mode: overlay;
     transition: opacity 0.25s ease-out;
     pointer-events: none;
+    z-index: 3;
 }
 
 .tilt-card-flash {

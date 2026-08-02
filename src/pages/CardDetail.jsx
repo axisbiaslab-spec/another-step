@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import registry from '../content/tarot/registry.json';
 import arcana from '../content/tarot/arcana.json';
 import placeholders from '../content/tarot/placeholders.json';
+import rwsPlaceholders from '../content/tarot/rws-placeholders.json';
 import TiltCard from '../components/TiltCard';
 
 const LANGS = ['en', 'ru', 'sr'];
@@ -51,6 +52,8 @@ function CardDetail() {
           <TiltCard
             src={`/tarot/${slug}.jpg`}
             placeholderSrc={placeholders[slug]}
+            rwsSrc={`/rws/${slug}.jpg`}
+            rwsPlaceholderSrc={rwsPlaceholders[slug]}
             alt={name}
             backText={description}
             attribution={attribution}

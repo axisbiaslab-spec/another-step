@@ -20,13 +20,27 @@ function isAlreadyUnlocked(cardCode) {
   }
 }
 
-function TiltCard({ src, placeholderSrc, alt, backText, attribution, glowKey = 'major', cardId, cardCode, lang }) {
+function TiltCard({
+  src,
+  placeholderSrc,
+  rwsSrc,
+  rwsPlaceholderSrc,
+  alt,
+  backText,
+  attribution,
+  glowKey = 'major',
+  cardId,
+  cardCode,
+  lang,
+}) {
   const wrapRef = useRef(null);
   const imgRef = useRef(null);
+  const rwsImgRef = useRef(null);
   const baselineRef = useRef(null);
   const activeRef = useRef(false);
   const [entered, setEntered] = useState(false);
   const [fullLoaded, setFullLoaded] = useState(false);
+  const [rwsLoaded, setRwsLoaded] = useState(false);
   const [active, setActive] = useState(false);
   const [rotation, setRotation] = useState(0); // multiples of 180 = flip state; keeps climbing, never resets
   const [peekOffset, setPeekOffset] = useState(0);
@@ -57,9 +71,18 @@ function TiltCard({ src, placeholderSrc, alt, backText, attribution, glowKey = '
     setFullLoaded(true);
   };
 
+  const handleRwsImageLoad = () => {
+    // eslint-disable-next-line no-unused-expressions
+    wrapRef.current?.offsetHeight;
+    setRwsLoaded(true);
+  };
+
   useEffect(() => {
     if (imgRef.current?.complete) {
       handleFullImageLoad();
+    }
+    if (rwsImgRef.current?.complete) {
+      handleRwsImageLoad();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -166,6 +189,26 @@ function TiltCard({ src, placeholderSrc, alt, backText, attribution, glowKey = '
     }, CELEBRATE_DURATION_MS);
   };
 
+  // Chrome can break backface-visibility hit-testing on a 3D-transformed
+  // face once it also has overflow:hidden + border-radius (needed for the
+  // card border) — the face facing away can still swallow clicks even
+  // though it's invisible. Don't rely on backface-visibility for this at
+  // all: explicitly turn off pointer events on whichever face isn't the
+  // one currently showing.
+  const normalizedRotation = ((rotation % 360) + 360) % 360;
+  const backShowing = normalizedRotation > 90 && normalizedRotation < 270;
+
+  // While the card is still locked, punch a soft-edged hole in the
+  // grayscale RWS layer right under the pointer so the real colour art
+  // underneath peeks through like a flashlight beam.
+  const rwsMaskStyle =
+    !unlocked && glare.opacity > 0
+      ? {
+          maskImage: `radial-gradient(circle 130px at ${glare.x}% ${glare.y}%, transparent 0%, black 100%)`,
+          WebkitMaskImage: `radial-gradient(circle 130px at ${glare.x}% ${glare.y}%, transparent 0%, black 100%)`,
+        }
+      : undefined;
+
   return (
     <div
       className={`tilt-card-scene tilt-card-scene--${glowKey} ${glowBoost ? 'tilt-card-scene--boost' : ''}`}
@@ -192,7 +235,7 @@ function TiltCard({ src, placeholderSrc, alt, backText, attribution, glowKey = '
           className={`flip-card-inner ${celebrating ? 'flip-card-inner--celebrating' : ''}`}
           style={{ transform: `rotateY(${rotation + peekOffset}deg)` }}
         >
-          <div className="flip-card-face flip-card-front">
+          <div className="flip-card-face flip-card-front" style={{ pointerEvents: backShowing ? 'none' : 'auto' }}>
             {placeholderSrc && (
               <img
                 className="card-image card-image--placeholder"
@@ -204,27 +247,55 @@ function TiltCard({ src, placeholderSrc, alt, backText, attribution, glowKey = '
             )}
             <img
               ref={imgRef}
-              className={`card-image card-image--full ${fullLoaded ? 'card-image--full-visible' : ''} ${
-                !unlocked ? 'card-image--locked' : ''
-              }`}
+              className={`card-image card-image--full ${fullLoaded ? 'card-image--full-visible' : ''}`}
               src={src}
               alt={alt}
               draggable={false}
               onLoad={handleFullImageLoad}
             />
-            {!unlocked && (
-              <div className="card-lock-badge" aria-hidden="true">
-                <svg viewBox="0 0 20 20" width="13" height="13" fill="currentColor">
-                  <path
-                    fillRule="evenodd"
-                    d="M10 1a4.5 4.5 0 0 0-4.5 4.5V9H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2h-.5V5.5A4.5 4.5 0 0 0 10 1Zm3 8V5.5a3 3 0 1 0-6 0V9h6Z"
-                    clipRule="evenodd"
+            {rwsSrc && (
+              <div className={`card-rws-layer ${unlocked ? 'card-rws-layer--hidden' : ''}`}>
+                {rwsPlaceholderSrc && (
+                  <img
+                    className="card-image card-image--placeholder"
+                    src={rwsPlaceholderSrc}
+                    alt=""
+                    aria-hidden="true"
+                    draggable={false}
                   />
-                </svg>
+                )}
+                {/* Same file, no filter — sits underneath so the flashlight
+                    hole reveals the RWS card's own colour, not the reward art. */}
+                <img
+                  className={`card-image card-image--rws-color ${rwsLoaded ? 'card-image--rws-color-visible' : ''}`}
+                  src={rwsSrc}
+                  alt=""
+                  aria-hidden="true"
+                  draggable={false}
+                />
+                <img
+                  ref={rwsImgRef}
+                  className={`card-image card-image--rws ${rwsLoaded ? 'card-image--rws-visible' : ''}`}
+                  src={rwsSrc}
+                  alt=""
+                  aria-hidden="true"
+                  draggable={false}
+                  onLoad={handleRwsImageLoad}
+                  style={rwsMaskStyle}
+                />
+                <div className="card-lock-badge" aria-hidden="true">
+                  <svg viewBox="0 0 20 20" width="13" height="13" fill="currentColor">
+                    <path
+                      fillRule="evenodd"
+                      d="M10 1a4.5 4.5 0 0 0-4.5 4.5V9H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2h-.5V5.5A4.5 4.5 0 0 0 10 1Zm3 8V5.5a3 3 0 1 0-6 0V9h6Z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </div>
               </div>
             )}
           </div>
-          <div className="flip-card-face flip-card-back">
+          <div className="flip-card-face flip-card-back" style={{ pointerEvents: backShowing ? 'auto' : 'none' }}>
             <div className="flip-card-back-content">
               <p>{backText}</p>
               {attribution && <p className="flip-card-attribution">— {attribution}</p>}
@@ -237,7 +308,7 @@ function TiltCard({ src, placeholderSrc, alt, backText, attribution, glowKey = '
         <div
           className="tilt-card-glare"
           style={{
-            background: `radial-gradient(circle at ${glare.x}% ${glare.y}%, rgba(255,255,255,0.9), rgba(255,255,255,0) 55%)`,
+            background: `radial-gradient(circle at ${glare.x}% ${glare.y}%, rgba(255,255,255,0.9), transparent 55%)`,
             opacity: glare.opacity,
           }}
         />
