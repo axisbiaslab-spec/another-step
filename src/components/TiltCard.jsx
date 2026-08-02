@@ -6,7 +6,7 @@ const DEVICE_TILT_RANGE = 18; // degrees of physical phone tilt that maps to ful
 const clamp01 = (v) => Math.min(1, Math.max(0, v));
 const clamp = (v, min, max) => Math.min(max, Math.max(min, v));
 
-function TiltCard({ src, placeholderSrc, alt, backText, glowKey = 'major' }) {
+function TiltCard({ src, placeholderSrc, alt, backText, attribution, glowKey = 'major' }) {
   const wrapRef = useRef(null);
   const imgRef = useRef(null);
   const baselineRef = useRef(null);
@@ -149,6 +149,7 @@ function TiltCard({ src, placeholderSrc, alt, backText, glowKey = 'major' }) {
           <div className="flip-card-face flip-card-back">
             <div className="flip-card-back-content">
               <p>{backText}</p>
+              {attribution && <p className="flip-card-attribution">— {attribution}</p>}
             </div>
           </div>
         </div>

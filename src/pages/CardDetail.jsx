@@ -34,6 +34,7 @@ function CardDetail() {
   const lang = LANGS.includes(i18n.resolvedLanguage) ? i18n.resolvedLanguage : 'en';
   const name = meta.name[lang] || meta.name.en;
   const description = text[lang] || text.en;
+  const attribution = [text.author, text.source].filter(Boolean).join(' — ');
 
   return (
     <div className="step-detail card-detail">
@@ -53,6 +54,7 @@ function CardDetail() {
             placeholderSrc={placeholders[slug]}
             alt={name}
             backText={description}
+            attribution={attribution}
             glowKey={meta.suit || meta.arcana}
           />
         </div>
