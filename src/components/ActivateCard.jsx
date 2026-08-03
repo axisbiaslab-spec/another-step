@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 const COPY = {
   en: {
@@ -34,6 +34,12 @@ function ActivateCard({ id, code, lang, onActivated }) {
   const [status, setStatus] = useState('idle'); // idle | pending | done | error
   const t = COPY[lang] || COPY.en;
   const storageKey = code ? `card-activated:${code}` : null;
+  // Some mobile browsers don't reliably synthesize `click` after a touch on
+  // a touch-action:none ancestor (the card wrapper) — fire on pointerup
+  // directly instead, matching the card's own tap-to-flip handling. A ref
+  // (not state) guards against also double-firing if click *does* land too,
+  // since state updates aren't visible synchronously to a same-tick handler.
+  const firingRef = useRef(false);
 
   useEffect(() => {
     if (storageKey && localStorage.getItem(storageKey) === '1') {
@@ -46,6 +52,8 @@ function ActivateCard({ id, code, lang, onActivated }) {
   if (!code) return null;
 
   const handleActivate = async () => {
+    if (firingRef.current || status !== 'idle') return;
+    firingRef.current = true;
     setStatus('pending');
     try {
       const result = await activateCardStub({ id, code });
@@ -55,9 +63,11 @@ function ActivateCard({ id, code, lang, onActivated }) {
         onActivated?.({ replay: false });
       } else {
         setStatus('error');
+        firingRef.current = false;
       }
     } catch {
       setStatus('error');
+      firingRef.current = false;
     }
   };
 
@@ -69,6 +79,7 @@ function ActivateCard({ id, code, lang, onActivated }) {
         <button
           className="activate-card-btn"
           onClick={handleActivate}
+          onPointerUp={handleActivate}
           disabled={status === 'pending'}
         >
           {status === 'pending' ? t.pending : t.activate}

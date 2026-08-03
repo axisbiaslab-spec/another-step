@@ -358,8 +358,16 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    /* flex-start (not center) so an overflowing quote scrolls from its
+       actual start instead of centering past the top edge — centering an
+       overflowing flex child clips its beginning above the visible area. */
+    justify-content: flex-start;
     padding: 2rem 2rem 0.5rem;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    /* The card itself is touch-action:none for the tilt gesture — reopen
+       vertical panning just for this scrollable text region. */
+    touch-action: pan-y;
 }
 
 .flip-card-activate-slot {
