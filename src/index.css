@@ -362,7 +362,7 @@ body {
        actual start instead of centering past the top edge — centering an
        overflowing flex child clips its beginning above the visible area. */
     justify-content: flex-start;
-    padding: 1rem 2rem 1rem;
+    padding: 1.5rem 2rem 1rem;
     margin: 2rem 0 0rem;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
