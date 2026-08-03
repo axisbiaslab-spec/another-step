@@ -281,6 +281,7 @@ body {
     width: min(68vw, 280px);
     aspect-ratio: 900 / 1559;
     transform-style: preserve-3d;
+    -webkit-transform-style: preserve-3d;
     opacity: 0;
     cursor: pointer;
     user-select: none;
@@ -313,6 +314,7 @@ body {
     width: 100%;
     height: 100%;
     transform-style: preserve-3d;
+    -webkit-transform-style: preserve-3d;
     transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
@@ -320,6 +322,11 @@ body {
     transition: transform 1.1s cubic-bezier(0.15, 0.8, 0.3, 1);
 }
 
+/* Safari has a longstanding bug: an element with `overflow: hidden` that
+   also has `backface-visibility: hidden` inside a preserve-3d stack loses
+   the backface-visibility entirely, so the flipped face shows through
+   (mirrored) instead of being hidden. Keep overflow clipping on a separate
+   inner wrapper so the face element itself has no overflow of its own. */
 .flip-card-face {
     position: absolute;
     inset: 0;
@@ -328,14 +335,20 @@ body {
     border-radius: 16px;
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.45);
+}
+
+.flip-card-face-clip {
+    position: absolute;
+    inset: 0;
+    border-radius: 16px;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
 }
 
 .flip-card-back {
     transform: rotateY(180deg);
     background: #000 url('/tarot/back-texture.jpg') center / 100% 100% no-repeat;
-    display: flex;
-    flex-direction: column;
 }
 
 .flip-card-back-content {

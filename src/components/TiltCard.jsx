@@ -264,7 +264,19 @@ function TiltCard({
           className={`flip-card-inner ${celebrating ? 'flip-card-inner--celebrating' : ''}`}
           style={{ transform: `rotateY(${rotation + peekOffset}deg)` }}
         >
-          <div className="flip-card-face flip-card-front" style={{ pointerEvents: backShowing ? 'none' : 'auto' }}>
+          <div
+            className="flip-card-face flip-card-front"
+            style={{
+              pointerEvents: backShowing ? 'none' : 'auto',
+              // Safari has a rendering bug where backface-visibility can
+              // fail to hide the away-facing side (showing it mirrored)
+              // during/around a 3D flip — force it with `visibility` too,
+              // driven by the same rotation math, so the wrong face is
+              // never painted regardless of that bug.
+              visibility: backShowing ? 'hidden' : 'visible',
+            }}
+          >
+            <div className="flip-card-face-clip">
             {placeholderSrc && (
               <img
                 className="card-image card-image--placeholder"
@@ -323,8 +335,16 @@ function TiltCard({
                 </div>
               </div>
             )}
+            </div>
           </div>
-          <div className="flip-card-face flip-card-back" style={{ pointerEvents: backShowing ? 'auto' : 'none' }}>
+          <div
+            className="flip-card-face flip-card-back"
+            style={{
+              pointerEvents: backShowing ? 'auto' : 'none',
+              visibility: backShowing ? 'visible' : 'hidden',
+            }}
+          >
+            <div className="flip-card-face-clip">
             <div className="flip-card-back-content">
               <p>{backText}</p>
               {attribution && <p className="flip-card-attribution">— {attribution}</p>}
@@ -336,6 +356,7 @@ function TiltCard({
               onPointerUp={(e) => e.stopPropagation()}
             >
               <ActivateCard id={cardId} code={cardCode} lang={lang} onActivated={handleActivated} />
+            </div>
             </div>
           </div>
         </div>
