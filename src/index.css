@@ -362,12 +362,15 @@ body {
        actual start instead of centering past the top edge — centering an
        overflowing flex child clips its beginning above the visible area. */
     justify-content: flex-start;
-    padding: 3.25rem 2rem 0.5rem;
+    padding: 1rem 2rem 1rem;
+    margin: 2rem 0 0rem;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     /* The card itself is touch-action:none for the tilt gesture — reopen
        vertical panning just for this scrollable text region. */
     touch-action: pan-y;
+    mask-image: linear-gradient(to bottom, transparent 0, black 36px, black calc(100% - 36px), transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0, black 36px, black calc(100% - 36px), transparent 100%);
 }
 
 .flip-card-activate-slot {
